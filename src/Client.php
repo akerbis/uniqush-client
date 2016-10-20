@@ -1,32 +1,37 @@
 <?php namespace DeSmart\Uniqush;
 
-use Guzzle\Http\Client as HttpClient;
+use GuzzleHttp\Client as HttpClient;
 use DeSmart\Uniqush\Request\RequestInterface;
 
 class Client
 {
     /**
-     * @var \Guzzle\Http\Client
+     * @var \GuzzleHttp\Client
      */
     protected $http;
 
     public function __construct($url, HttpClient $http = null)
     {
-        $this->http = $http ?: new HttpClient;
-        $this->http->setBaseUrl($url);
+        $this->http = $http ?: new HttpClient(['base_uri' => $url]);
     }
 
     /**
      * Send request to Uniqush server
-     *
+     *@
      * @param \DeSmart\Uniqush\Request\RequestInterface $request
      * @return string
      */
     public function send(RequestInterface $request)
     {
-        $guzzle_request = $this->http->post($request->getUrl(), [], $request->getQuery());
-        $response = $this->http->send($guzzle_request);
+        $response = $this->http->request('POST', $request->getUrl(), $request->getQuery());
 
-        return $response->__toString();
+        if ($response->getStatusCode() === 200) {
+            $decoded = json_decode($response->getBody());
+            if ($decoded !== false) {
+                return $decoded;
+            }
+            throw new \Exception('Invalid JSON returned: '.$response->getBody());
+        }
+        throw new \Exception($response->getStatusCode().' response from Uniqush server:'.$this->getReasonPhrase());
     }
 }
