@@ -17,7 +17,7 @@ class Client
 
     /**
      * Send request to Uniqush server
-     *@
+     *
      * @param \DeSmart\Uniqush\Request\RequestInterface $request
      * @return string
      */
@@ -26,11 +26,11 @@ class Client
         $response = $this->http->request('POST', $request->getUrl(), $request->getQuery());
 
         if ($response->getStatusCode() === 200) {
-            $decoded = json_decode($response->getBody());
+            $decoded = json_decode($response->getBody(), true);
             if ($decoded !== false) {
                 return $decoded;
             }
-            throw new \Exception('Invalid JSON returned: '.$response->getBody());
+            throw new \Exception('Invalid JSON returned: '.(string)$response->getBody());
         }
         throw new \Exception($response->getStatusCode().' response from Uniqush server:'.$this->getReasonPhrase());
     }
