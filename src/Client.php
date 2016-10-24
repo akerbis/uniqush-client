@@ -23,7 +23,8 @@ class Client
      */
     public function send(RequestInterface $request)
     {
-        $response = $this->http->request('POST', $request->getUrl(), $request->getQuery());
+        $queryParams = ['form_params' => $request->getQuery()];
+        $response = $this->http->request('POST', $request->getUrl(), $queryParams);
 
         if ($response->getStatusCode() === 200) {
             $decoded = json_decode($response->getBody(), true);
