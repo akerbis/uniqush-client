@@ -28,9 +28,9 @@ class Message
     protected $img;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $userParam;
+    protected $userParams;
 
     public function __construct(
         $content,
@@ -38,14 +38,14 @@ class Message
         $ttl = null,
         $badge = null,
         $img = null,
-        $userParam = null
+        $userParams = array()
     ) {
         $this->content = $content;
         $this->sound = $sound;
         $this->ttl = $ttl;
         $this->badge = $badge;
         $this->img = $img;
-        $this->userParam = $userParam;
+        $this->userParams = $userParams;
     }
 
     /**
@@ -68,7 +68,7 @@ class Message
             $this->getTtl(),
             $this->getBadge(),
             $this->getImg(),
-            $this->getUserParam()
+            $this->getUserParams()
         );
     }
 
@@ -92,7 +92,7 @@ class Message
             $this->getTtl(),
             $this->getBadge(),
             $this->getImg(),
-            $this->getUserParam()
+            $this->getUserParams()
         );
     }
 
@@ -116,7 +116,7 @@ class Message
             $ttl,
             $this->getBadge(),
             $this->getImg(),
-            $this->getUserParam()
+            $this->getUserParams()
         );
     }
 
@@ -140,7 +140,7 @@ class Message
             $this->getTtl(),
             $badge,
             $this->getImg(),
-            $this->getUserParam()
+            $this->getUserParams()
         );
     }
 
@@ -164,23 +164,23 @@ class Message
             $this->getTtl(),
             $this->getBadge(),
             $img,
-            $this->getUserParam()
+            $this->getUserParams()
         );
     }
 
     /**
      * @return string
      */
-    public function getUserParam()
+    public function getUserParams()
     {
-        return $this->userParam;
+        return $this->userParams;
     }
 
     /**
-     * @param string $userParam
+     * @param string $userParams
      * @return self
      */
-    public function setUserParam($userParam)
+    public function setUserParams($userParams)
     {
         return new static(
             $this->getContent(),
@@ -188,7 +188,7 @@ class Message
             $this->getTtl(),
             $this->getBadge(),
             $this->getImg(),
-            $userParam
+            $userParams
         );
     }
 }

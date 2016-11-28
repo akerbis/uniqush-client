@@ -41,14 +41,17 @@ class PushRequest implements RequestInterface
      */
     public function getQuery()
     {
-        return array_filter([
-            'service' => $this->serviceName,
-            'subscriber' => is_array($this->subscriber) ? join(',', $this->subscriber) : $this->subscriber,
-            'msg' => $this->message->getContent(),
-            'sound' => $this->message->getSound(),
-            'badge' => $this->message->getBadge(),
-            'ttl' => $this->message->getTtl(),
-            'img' => $this->message->getImg(),
-        ]);
+        return array_merge(
+            $this->message->getUserParams(),
+            array_filter([
+                'service' => $this->serviceName,
+                'subscriber' => is_array($this->subscriber) ? join(',', $this->subscriber) : $this->subscriber,
+                'msg' => $this->message->getContent(),
+                'sound' => $this->message->getSound(),
+                'badge' => $this->message->getBadge(),
+                'ttl' => $this->message->getTtl(),
+                'img' => $this->message->getImg(),
+            ])
+        );
     }
 }
